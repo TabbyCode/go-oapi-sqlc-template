@@ -1,0 +1,44 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+type: 'application'
+language: 'go'
+
+project:
+  name: 'temp'
+  description: 'A very basic template for a Golang project'
+
+fileGroups:
+  sources:
+    - 'cmd/main.go'
+
+tasks:
+  clean:
+    script: 'rm -rf bin'
+    options:
+      cache: false
+  setup:
+    script: 'go mod tidy'
+    inputs:
+      - 'go.mod'
+  format:
+    script: 'gofumpt -l -w .; golangci-lint run --fix --allow-parallel-runners --issues-exit-code 0 > /dev/null'
+    inputs:
+      - '@group(sources)'
+  lint:
+    script: 'golangci-lint run --allow-parallel-runners; go vet ./...'
+    inputs:
+      - '@group(sources)'
+  test:
+    command: 'go test ./...'
+  build:
+    env:
+      CGO_ENABLED: '0'
+      GOOS: 'linux'
+      GOARCH: 'amd64'
+    command: 'go build -ldflags="-s" -ldflags="-w" -gcflags="-N" -gcflags="-l" -o bin/app cmd/main.go'
+    inputs:
+      - '@group(sources)'
+    outputs:
+      - 'bin/app'
+  run:
+    script: 'go run ./cmd'
