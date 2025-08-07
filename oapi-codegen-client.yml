@@ -1,0 +1,9 @@
+package: client
+output: pkg/gen/client.gen.go
+generate:
+  models: true
+  client: true
+  embedded-spec: true
+output-options:
+  include-tags:
+    - users

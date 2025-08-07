@@ -20,6 +20,12 @@ tasks:
     script: 'go mod tidy; awk "/^\\s*tool\\s+/ {print \$2}" go.mod | xargs -I {} go install {}'
     inputs:
       - 'go.mod'
+  generate:
+    script: 'bash scripts/generate.sh'
+    inputs:
+      - '@group(sources)'
+      - 'api/openapi.yml'
+      - 'scripts/generate.sh'
   format:
     script: 'gofumpt -l -w .; golangci-lint run --fix --allow-parallel-runners --issues-exit-code 0 > /dev/null'
     inputs:
