@@ -44,3 +44,6 @@ go.work.sum
 
 # Binary files
 bin/
+
+# Generated files
+gen/
