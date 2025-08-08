@@ -12,11 +12,14 @@ type Config struct {
 }
 
 func Load() *Config {
-	_ = godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Failed to load environment variables: %s", err)
+	}
 
 	var cfg Config
 
-	err := envconfig.Process("", &cfg)
+	err = envconfig.Process("", &cfg)
 	if err != nil {
 		log.Fatalf("Failed to load server config: %s", err)
 	}
