@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/xurvan/go-template/config"
-	"github.com/xurvan/go-template/internal/gen"
+	"github.com/xurvan/go-template/internal/gen/oapi"
 	"github.com/xurvan/go-template/internal/server"
 )
 
@@ -18,9 +18,9 @@ func main() {
 	cfg := config.Load()
 
 	srv := server.NewServer()
-	handler := gen.HandlerWithOptions(
+	handler := oapi.HandlerWithOptions(
 		srv,
-		gen.GorillaServerOptions{},
+		oapi.GorillaServerOptions{},
 	)
 
 	httpServer := &http.Server{

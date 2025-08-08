@@ -1,5 +1,5 @@
-package: gen
-output: internal/gen/server.gen.go
+package: oapi
+output: internal/gen/oapi/users.go
 generate:
   models: true
   gorilla-server: true

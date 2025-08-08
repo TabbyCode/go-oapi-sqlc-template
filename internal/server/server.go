@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/xurvan/go-template/internal/gen"
+	"github.com/xurvan/go-template/internal/gen/oapi"
 	"github.com/xurvan/go-template/pkg/httputil"
 )
 
@@ -16,7 +16,7 @@ func NewServer() *Server {
 }
 
 func (s *Server) ListUsers(w http.ResponseWriter, r *http.Request) {
-	users := []gen.User{
+	users := []oapi.User{
 		{
 			Id:        1,
 			Name:      "John Doe",
@@ -35,13 +35,13 @@ func (s *Server) ListUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var userCreate gen.UserCreate
+	var userCreate oapi.UserCreate
 	if !httputil.ReadJSON(w, r, &userCreate) {
 		return
 	}
 
 	// This is a mock implementation
-	user := gen.User{
+	user := oapi.User{
 		Id:        3,
 		Name:      userCreate.Name,
 		Email:     userCreate.Email,
@@ -52,7 +52,7 @@ func (s *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) GetUserById(w http.ResponseWriter, r *http.Request, id int64) {
-	user := gen.User{
+	user := oapi.User{
 		Id:        id,
 		Name:      "John Doe",
 		Email:     "john@example.com",
@@ -63,13 +63,13 @@ func (s *Server) GetUserById(w http.ResponseWriter, r *http.Request, id int64) {
 }
 
 func (s *Server) UpdateUser(w http.ResponseWriter, r *http.Request, id int64) {
-	var userUpdate gen.UserUpdate
+	var userUpdate oapi.UserUpdate
 	if !httputil.ReadJSON(w, r, &userUpdate) {
 		return
 	}
 
 	now := time.Now()
-	user := gen.User{
+	user := oapi.User{
 		Id:        id,
 		CreatedAt: time.Now(),
 		UpdatedAt: &now,
