@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/xurvan/go-template/config"
+	"github.com/xurvan/go-template/internal/database"
 	"github.com/xurvan/go-template/internal/gen/oapi"
 	"github.com/xurvan/go-template/internal/server"
 )
@@ -17,14 +18,19 @@ import (
 func main() {
 	cfg := config.Load()
 
-	srv := server.NewServer()
+	db, err := database.New(cfg)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %s", err)
+	}
+
+	srv := server.NewServer(db)
 	handler := oapi.HandlerWithOptions(
 		srv,
 		oapi.GorillaServerOptions{},
 	)
 
 	httpServer := &http.Server{
-		Addr:    cfg.Address,
+		Addr:    cfg.ListenAddress,
 		Handler: handler,
 	}
 
@@ -33,7 +39,7 @@ func main() {
 
 	// Start the server
 	go func() {
-		log.Printf("Starting server on %s", cfg.Address)
+		log.Printf("Starting server on %s", cfg.ListenAddress)
 		serverErrors <- httpServer.ListenAndServe()
 	}()
 

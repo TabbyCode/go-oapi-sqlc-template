@@ -8,6 +8,7 @@ require (
 	github.com/getkin/kin-openapi v0.132.0
 	github.com/gorilla/mux v1.8.0
 	github.com/jackc/pgx/v5 v5.7.5
+	github.com/jinzhu/copier v0.4.0
 	github.com/joho/godotenv v1.5.1
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/oapi-codegen/runtime v1.1.2

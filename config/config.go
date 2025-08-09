@@ -8,7 +8,8 @@ import (
 )
 
 type Config struct {
-	Address string `envconfig:"ADDRESS" default:"localhost:8080"`
+	ListenAddress string `envconfig:"LISTEN_ADDRESS" default:"localhost:8080"`
+	DatabaseURL   string `envconfig:"DATABASE_URL" required:"true"`
 }
 
 func Load() *Config {
