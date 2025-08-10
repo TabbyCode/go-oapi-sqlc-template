@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 mkdir -p internal/gen/db internal/gen/oapi pkg/gen
 
