@@ -13,7 +13,7 @@ fileGroups:
 
 tasks:
   clean:
-    script: 'rm -rf bin'
+    script: 'rm -rf bin internal/gen pkg/gen'
     options:
       cache: false
   setup:
@@ -26,6 +26,9 @@ tasks:
       - '@group(sources)'
       - 'api/openapi.yml'
       - 'scripts/generate.sh'
+    outputs:
+      - 'internal/gen'
+      - 'pkg/gen'
   format:
     script: 'gofumpt -l -w .; golangci-lint run --fix --allow-parallel-runners --issues-exit-code 0 > /dev/null'
     inputs:
