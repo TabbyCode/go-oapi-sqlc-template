@@ -51,3 +51,5 @@ tasks:
       - 'bin/app'
   run:
     script: 'go run ./cmd'
+  migrate:
+    script: 'migrate -source file://db/migrations/ -database "$DATABASE_URL" up'
