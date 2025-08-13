@@ -53,3 +53,7 @@ tasks:
     script: 'go run ./cmd'
   migrate:
     script: 'migrate -source file://db/migrations/ -database "$DATABASE_URL" up'
+    options:
+      envFile: true
+    inputs:
+      - 'db/migrations'
