@@ -50,12 +50,12 @@ tasks:
       CGO_ENABLED: '0'
       GOOS: 'linux'
       GOARCH: 'amd64'
-    command: 'go build -ldflags="-s" -ldflags="-w" -gcflags="-N" -gcflags="-l" -o bin/app cmd/main.go'
+    script: 'go build -ldflags="-s -w" -trimpath -o bin/server cmd/server/main.go'
     inputs:
       - '@group(sources)'
     outputs:
-      - 'bin/app'
-  run:
+      - 'bin/server'
+  serve:
     script: 'go run ./cmd'
     inputs:
       - '@group(sources)'
