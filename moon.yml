@@ -9,7 +9,9 @@ project:
 
 fileGroups:
   sources:
-    - 'cmd/main.go'
+    - 'cmd'
+    - 'internal'
+    - 'pkg'
 
 tasks:
   clean:
@@ -23,7 +25,9 @@ tasks:
   generate:
     script: 'bash scripts/generate.sh'
     inputs:
-      - '@group(sources)'
+      - 'configs'
+      - 'db/migrations'
+      - 'db/queries'
       - 'api/openapi.yml'
       - 'scripts/generate.sh'
     outputs:
@@ -39,6 +43,8 @@ tasks:
       - '@group(sources)'
   test:
     command: 'go test ./...'
+    inputs:
+      - '@group(sources)'
   build:
     env:
       CGO_ENABLED: '0'
@@ -51,6 +57,8 @@ tasks:
       - 'bin/app'
   run:
     script: 'go run ./cmd'
+    inputs:
+      - '@group(sources)'
   migrate:
     script: 'migrate -source file://db/migrations/ -database "$DATABASE_URL" up'
     options:
