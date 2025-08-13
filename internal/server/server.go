@@ -3,9 +3,9 @@ package server
 import (
 	"net/http"
 
-	"github.com/xurvan/go-template/internal/database"
-	"github.com/xurvan/go-template/internal/gen/oapi"
-	"github.com/xurvan/go-template/pkg/httputil"
+	"github.com/xurvan/go-oapi-sqlc-template/internal/database"
+	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
+	"github.com/xurvan/go-oapi-sqlc-template/pkg/httputil"
 )
 
 type Server struct {

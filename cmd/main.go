@@ -9,10 +9,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/xurvan/go-template/config"
-	"github.com/xurvan/go-template/internal/database"
-	"github.com/xurvan/go-template/internal/gen/oapi"
-	"github.com/xurvan/go-template/internal/server"
+	"github.com/xurvan/go-oapi-sqlc-template/config"
+	"github.com/xurvan/go-oapi-sqlc-template/internal/database"
+	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
+	"github.com/xurvan/go-oapi-sqlc-template/internal/server"
 )
 
 func main() {

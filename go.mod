@@ -1,4 +1,4 @@
-module github.com/xurvan/go-template
+module github.com/xurvan/go-oapi-sqlc-template
 
 go 1.24.5
 
