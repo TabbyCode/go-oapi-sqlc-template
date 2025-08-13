@@ -7,7 +7,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jinzhu/copier"
 
-	"github.com/xurvan/go-oapi-sqlc-template/config"
+	"github.com/xurvan/go-oapi-sqlc-template/internal/config"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/db"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
 )

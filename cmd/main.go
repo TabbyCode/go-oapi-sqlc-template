@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/xurvan/go-oapi-sqlc-template/config"
+	"github.com/xurvan/go-oapi-sqlc-template/internal/config"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/database"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/server"
