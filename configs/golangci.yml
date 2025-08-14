@@ -1,0 +1,60 @@
+version: "2"
+
+issues:
+  max-same-issues: 50
+
+formatters:
+  enable:
+    - goimports
+    - golines
+    - gci
+    - gofmt
+    - gofumpt
+
+  settings:
+    golines:
+      max-len: 120
+    gci:
+      sections:
+        - standard
+        - default
+        - blank
+        - dot
+        - alias
+        - localmodule
+
+linters:
+  default: all
+  disable:
+    - errchkjson # reduce consistency
+    - forcetypeassert # errcheck is better
+    - gomodguard # only useful for large codebases
+    - depguard # only useful for large codebases
+    - lll # golines is better
+    - nlreturn # wsl_v5 is better
+    - wsl # wsl_v5 is better
+
+  settings:
+    govet:
+      enable-all: true
+      disable:
+        - fieldalignment
+      settings:
+        shadow:
+          strict: true
+    nakedret:
+      max-func-lines: 0
+    reassign:
+      patterns:
+        - ".*"
+    sloglint:
+      no-global: all
+      context: scope
+    staticcheck:
+      checks:
+        - all
+    usetesting:
+      os-temp-dir: true
+    wsl_v5:
+      allow-whole-block: true
+      default: all
