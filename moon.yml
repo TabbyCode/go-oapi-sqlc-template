@@ -19,7 +19,7 @@ tasks:
     options:
       cache: false
   setup:
-    script: 'go mod tidy; awk "/^\\s*tool\\s+/ {print \$2}" go.mod | xargs -I {} go install {}'
+    script: 'go mod tidy'
     inputs:
       - 'go.mod'
   generate:
