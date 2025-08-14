@@ -31,6 +31,7 @@ func New(cfg *config.Config) (*Database, error) {
 
 func (d *Database) CreateUser(ctx context.Context, user oapi.UserCreate) (*oapi.User, error) {
 	var params db.CreateUserParams
+
 	err := copier.Copy(&params, user)
 	if err != nil {
 		return nil, err
@@ -42,6 +43,7 @@ func (d *Database) CreateUser(ctx context.Context, user oapi.UserCreate) (*oapi.
 	}
 
 	var res oapi.User
+
 	err = copier.Copy(&res, row)
 	if err != nil {
 		return nil, err
@@ -57,6 +59,7 @@ func (d *Database) GetUser(ctx context.Context, id int64) (*oapi.User, error) {
 	}
 
 	var user oapi.User
+
 	err = copier.Copy(&user, row)
 	if err != nil {
 		return nil, err
@@ -74,6 +77,7 @@ func (d *Database) ListUsers(ctx context.Context) ([]oapi.User, error) {
 	var users []oapi.User
 	for _, row := range rows {
 		var user oapi.User
+
 		err = copier.Copy(&user, row)
 		if err != nil {
 			return nil, err
@@ -87,12 +91,14 @@ func (d *Database) ListUsers(ctx context.Context) ([]oapi.User, error) {
 
 func (d *Database) UpdateUser(ctx context.Context, id int64, update oapi.UserUpdate) (*oapi.User, error) {
 	var params db.UpdateUserParams
+
 	err := copier.Copy(&params, update)
 	if err != nil {
 		return nil, err
 	}
 
 	params.ID = int32(id)
+
 	row, err := d.qr.UpdateUser(ctx, params)
 	if err != nil {
 		return nil, err

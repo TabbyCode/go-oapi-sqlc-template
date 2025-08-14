@@ -40,6 +40,7 @@ func main() {
 	// Start the server
 	go func() {
 		log.Printf("Starting server on %s", cfg.ListenAddress)
+
 		serverErrors <- httpServer.ListenAndServe()
 	}()
 
@@ -60,9 +61,14 @@ func main() {
 		defer cancel()
 
 		// Gracefully shutdown the server
-		if err := httpServer.Shutdown(ctx); err != nil {
+		err := httpServer.Shutdown(ctx)
+		if err != nil {
 			log.Printf("Error during server shutdown: %v", err)
-			httpServer.Close()
+
+			err := httpServer.Close()
+			if err != nil {
+				log.Printf("Error during server shutdown: %v", err)
+			}
 		}
 
 		log.Println("Server gracefully stopped")
