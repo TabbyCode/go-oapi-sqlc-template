@@ -4,12 +4,9 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-)
 
-type ErrorResponse struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
+	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
+)
 
 func WriteJSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
@@ -24,7 +21,7 @@ func WriteJSON(w http.ResponseWriter, statusCode int, data interface{}) {
 }
 
 func WriteError(w http.ResponseWriter, statusCode int, message string) {
-	errResp := ErrorResponse{
+	errResp := oapi.Error{
 		Code:    statusCode,
 		Message: message,
 	}
