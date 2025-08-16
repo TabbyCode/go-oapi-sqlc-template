@@ -10,13 +10,22 @@ import (
 
 func WriteJSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(statusCode)
 
 	if data != nil {
-		err := json.NewEncoder(w).Encode(data)
+		jsonData, err := json.Marshal(data)
 		if err != nil {
-			log.Printf("Error encoding response: %v", err)
+			http.Error(w, "", http.StatusInternalServerError)
+			return
 		}
+
+		w.WriteHeader(statusCode)
+
+		_, err = w.Write(jsonData)
+		if err != nil {
+			log.Printf("Error writing response: %v", err)
+		}
+	} else {
+		w.WriteHeader(statusCode)
 	}
 }
 
