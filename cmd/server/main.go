@@ -29,9 +29,15 @@ func main() {
 		oapi.GorillaServerOptions{},
 	)
 
+	handler = server.SetupMiddlewares(handler)
+
 	httpServer := &http.Server{
-		Addr:    cfg.ListenAddress,
-		Handler: handler,
+		Addr:              cfg.ListenAddress,
+		Handler:           handler,
+		ReadTimeout:       15 * time.Second,
+		ReadHeaderTimeout: 5 * time.Second,
+		WriteTimeout:      15 * time.Second,
+		IdleTimeout:       60 * time.Second,
 	}
 
 	// Channel to listen for errors coming from the listener
