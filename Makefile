@@ -1,4 +1,4 @@
-.PHONY: all install clean format lint test build run
+.PHONY: all install clean format lint test build serve
 
 all: clean build
 
@@ -20,5 +20,5 @@ test:
 build:
 	moon :build
 
-run:
-	moon :run
+serve:
+	moon :serve
