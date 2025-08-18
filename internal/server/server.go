@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/xurvan/go-oapi-sqlc-template/internal/database"
@@ -71,6 +72,11 @@ func (s *Server) UpdateUser(w http.ResponseWriter, r *http.Request, id int64) {
 func (s *Server) DeleteUser(w http.ResponseWriter, r *http.Request, id int64) {
 	err := s.db.DeleteUser(r.Context(), id)
 	if err != nil {
+		if errors.Is(err, database.ErrUserNotFound) {
+			httputil.WriteError(w, http.StatusNotFound, "User not found")
+			return
+		}
+
 		httputil.WriteError(w, http.StatusInternalServerError, "Failed to delete user: "+err.Error())
 		return
 	}

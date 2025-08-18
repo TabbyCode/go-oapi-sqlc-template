@@ -115,5 +115,14 @@ func (d *Database) UpdateUser(ctx context.Context, id int64, update oapi.UserUpd
 }
 
 func (d *Database) DeleteUser(ctx context.Context, id int64) error {
-	return d.qr.DeleteUser(ctx, int32(id))
+	rowsAffected, err := d.qr.DeleteUser(ctx, int32(id))
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return ErrUserNotFound
+	}
+
+	return nil
 }
