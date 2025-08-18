@@ -42,7 +42,7 @@ tasks:
     inputs:
       - '@group(sources)'
   test:
-    command: 'go test ./...'
+    script: 'go test ./...'
     inputs:
       - '@group(sources)'
   build:
@@ -56,12 +56,13 @@ tasks:
     outputs:
       - 'bin/server'
   serve:
-    script: 'go run ./cmd'
+    script: 'go run ./cmd/server'
     inputs:
       - '@group(sources)'
   migrate:
     script: 'migrate -source file://db/migrations/ -database "$DATABASE_URL" up'
     options:
       envFile: true
+      cache: false
     inputs:
       - 'db/migrations'
