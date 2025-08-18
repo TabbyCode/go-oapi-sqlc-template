@@ -2,12 +2,10 @@ proto = "0.50.3"
 moon = "1.38.4"
 go = "1.24.5"
 golangci-lint = "2.3.0"
-gofumpt = "0.8.0"
 migrate = "4.18.3"
 sqlc = "1.29.0"
 
 [plugins]
 golangci-lint = "file://.moon/plugins/golangci-lint.yml"
-gofumpt = "file://.moon/plugins/gofumpt.yml"
 migrate = "https://raw.githubusercontent.com/jamesukiyo/proto-plugins/master/migrate.toml"
 sqlc = "https://raw.githubusercontent.com/jamesukiyo/proto-plugins/master/sqlc.toml"
