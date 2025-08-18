@@ -1,0 +1,19 @@
+# A YAML plugin for proto:
+# https://moonrepo.dev/docs/proto/non-wasm-plugin
+
+name: sqruff
+type: cli
+
+resolve:
+  git-url: https://github.com/quarylabs/sqruff
+
+platform:
+  linux:
+    download-file: sqruff-linux-{arch}-musl.tar.gz
+  macos:
+    download-file: sqruff-darwin-{arch}.tar.gz
+  windows:
+    download-file: sqruff-windows-{arch}-musl.zip
+
+install:
+  download-url: https://github.com/quarylabs/sqruff/releases/download/v{version}/{download_file}
