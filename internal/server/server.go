@@ -5,7 +5,7 @@ import (
 
 	"github.com/xurvan/go-oapi-sqlc-template/internal/database"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
-	"github.com/xurvan/go-oapi-sqlc-template/internal/httputil"
+	"github.com/xurvan/go-oapi-sqlc-template/pkg/httputil"
 )
 
 type Server struct {
