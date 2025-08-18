@@ -34,11 +34,11 @@ tasks:
       - 'internal/gen'
       - 'pkg/gen'
   format:
-    script: 'golangci-lint run -c configs/golangci.yml --fix --allow-parallel-runners --issues-exit-code 0 > /dev/null'
+    script: 'bash scripts/format.sh'
     inputs:
       - '@group(sources)'
   lint:
-    script: 'golangci-lint run -c configs/golangci.yml --allow-parallel-runners'
+    script: 'bash scripts/lint.sh'
     inputs:
       - '@group(sources)'
   test:
