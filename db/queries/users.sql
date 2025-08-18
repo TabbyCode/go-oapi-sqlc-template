@@ -6,7 +6,7 @@ SELECT
     created_at,
     updated_at
 FROM users
-WHERE id = $1
+WHERE id = sqlc.arg('id')
 LIMIT 1;
 
 -- name: ListUsers :many
@@ -24,19 +24,20 @@ INSERT INTO users (
     name,
     email
 )
-VALUES ($1, $2)
+VALUES (sqlc.arg('name'), sqlc.arg('email'))
 RETURNING *;
 
 -- name: UpdateUser :one
 UPDATE users
 SET
-    name = COALESCE($2, name),
-    email = COALESCE($3, email),
+    name = COALESCE(sqlc.narg('name'), name),
+    email = COALESCE(sqlc.narg('email'), email),
     updated_at = NOW()
-WHERE id = $1
+WHERE id = sqlc.arg('id')
 RETURNING *;
 
 -- name: DeleteUser :exec
 DELETE
 FROM users
-WHERE id = $1;
+WHERE id = sqlc.arg('id')
+RETURNING *;
