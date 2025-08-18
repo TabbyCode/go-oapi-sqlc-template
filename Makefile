@@ -1,4 +1,4 @@
-.PHONY: all install clean format lint test build serve
+.PHONY: all install clean setup generate format lint test build serve
 
 all: clean build
 
@@ -7,6 +7,12 @@ install:
 
 clean:
 	moon :clean
+
+setup:
+	moon :setup
+
+generate:
+	moon :generate
 
 format:
 	moon :format
@@ -22,3 +28,6 @@ build:
 
 serve:
 	moon :serve
+
+migrate:
+	moon :migrate
