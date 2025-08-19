@@ -10,16 +10,16 @@ This repository provides a production-ready starter template for building REST A
 
 ## ✨ Features
 
-- **Go** 🐹 for the core application logic
-- **OpenAPI-first development** 📋 with `oapi-codegen` to generate server stubs and models from an `openapi.yaml` spec
-- **Type-safe database interaction** 🛡️ with `sqlc` to generate Go code from raw SQL queries
-- **Database migrations** 🔄 with golang-migrate
-- **Comprehensive linting** 🔍 with golangci-lint and sqruff for SQL
-- **Code formatting** 🎨 with gofmt and SQL formatting tools
-- **Modern task management** 🌙 with Moonrepo for consistent development workflows
-- **Tool versioning management** ⚙️ with Moonrepo proto
-- **Environment-based configuration** 🔧 using `envconfig` to read configuration from environment variables
-- **Clear project structure** 📁 separating API definitions, business logic, database code, and configuration
+- 🐹 **Go** for the core application logic
+- 📋 **OpenAPI-first development** with `oapi-codegen` to generate server stubs and models from an `openapi.yaml` spec
+- 🛡️ **Type-safe database interaction** with `sqlc` to generate Go code from raw SQL queries
+- 🔄 **Database migrations** with golang-migrate
+- 🔍 **Comprehensive linting** with golangci-lint and sqruff for SQL
+- 🎨 **Code formatting** with gofmt and SQL formatting tools
+- 🌙 **Modern task management** with Moonrepo for consistent development workflows
+- ⚙️ **Tool versioning management** with Moonrepo proto
+- 🔧 **Environment-based configuration** using `envconfig` to read configuration from environment variables
+- 📁 **Clear project structure** separating API definitions, business logic, database code, and configuration
 
 ## 📂 Project Structure
 
@@ -73,56 +73,45 @@ The application can be configured using the following environment variables:
 | LISTEN_ADDRESS  | The address to bind the server | localhost:8080    | No       |
 | DATABASE_URL    | Database connection string     | -                 | Yes      |
 
-## 🔧 Code Generation with SQLC
+## 🔧 Setup
 
-This project uses [SQLC](https://sqlc.dev/) to generate type-safe Go code from SQL queries. SQLC provides:
+This project uses [Moonrepo Proto](https://moonrepo.dev/proto) to manage tool versions consistently across environments. 
 
-- **Type safety**: Generated code matches your database schema
-- **Performance**: No reflection, just plain Go code
-- **Maintainability**: Changes to SQL are reflected in generated Go code
+### Quick Start
 
-### SQLC Configuration
+1. **Install Proto** (if you haven't already):
+   ```shell
+   curl -fsSL https://moonrepo.dev/install/proto.sh | bash
+   ```
 
-The SQLC configuration is located at `configs/sqlc.yml`. To add new queries:
+2. **Install all required tools**:
+   ```shell
+   proto use
+   ```
+   
+   Alternatively, use our installation script:
+   ```shell
+   bash scripts/install.sh
+   ```
 
-1. Write your SQL queries in `db/queries/`
-2. Run `moon generate` (or `make generate`) to regenerate the Go code
-3. Use the generated code in your repositories
+3. **Run the project** using Moonrepo tasks:
+   ```shell
+   moon :setup    # Install Go dependencies
+   moon :generate # Generate code from OpenAPI and SQL
+   moon :serve    # Start development server
+   ```
 
-## 🔍 Linting and Formatting
+### What Gets Installed
 
-The project includes comprehensive linting and formatting tools:
+Proto will automatically install and manage the following tools at their specified versions:
+- **Go** (1.24) - Core language runtime
+- **Node.js** - For additional tooling dependencies
+- **golangci-lint** - Go code linting
+- **sqlc** - SQL to Go code generation
+- **oapi-codegen** - OpenAPI to Go code generation
+- **golang-migrate** - Database migration tool
 
-### Go Code
-- **golangci-lint**: Configured via `configs/golangci.yml`
-- **gofmt**: Standard Go formatting
-
-### SQL Code
-- **sqruff**: SQL linting and formatting configured via `configs/sqruff.toml`
-
-## 🌙 Tool Management with Moonrepo
-
-This project uses [Moonrepo](https://moonrepo.dev/) for modern development workflow management:
-
-### Moonrepo Proto
-Moonrepo proto is used to manage tool versions consistently across the development team. This ensures everyone uses the same versions of:
-- Go toolchain
-- Database tools
-- Linting tools
-- Code generators
-
-### Available Tasks
-Run tasks using `moon <task>` or `make <task>` (for compatibility):
-
-- `moon :setup` - Download Go dependencies
-- `moon :generate` - Run all code generation (SQLC, OpenAPI)
-- `moon :format` - Format all code (Go, SQL)
-- `moon :lint` - Lint all code
-- `moon :test` - Run tests
-- `moon :build` - Build the application
-- `moon :serve` - Run the development server
-- `moon :migrate` - Run database migrations
-- `moon :clean` - Clean generated files and build artifacts
+All tool versions are locked in `.prototools` to ensure consistency across development environments.
 
 ### Make Compatibility
 
@@ -181,12 +170,3 @@ The API provides the following endpoints:
 - `DELETE /users/{id}` - Delete a user
 
 For complete API documentation, see the OpenAPI specification in `api/openapi.yml`.
-
-## 🔄 Development Workflow
-
-1. **Setup**: Run `moon :setup` to install dependencies
-2. **Generate**: Run `moon :generate` after modifying SQL queries or OpenAPI specs
-3. **Format**: Run `moon :format` before committing
-4. **Lint**: Run `moon :lint` to check code quality
-5. **Test**: Run `moon :test` to execute tests
-6. **Build**: Run `moon :build` for production builds
