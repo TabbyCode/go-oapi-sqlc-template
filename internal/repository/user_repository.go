@@ -1,4 +1,4 @@
-package database
+package repository
 
 import (
 	"context"
@@ -12,24 +12,24 @@ import (
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
 )
 
-type Database struct {
+type UserRepository struct {
 	qr *db.Queries
 }
 
-func New(cfg *config.Config) (*Database, error) {
+func NewUserRepository(cfg *config.Config) (*UserRepository, error) {
 	conn, err := pgx.Connect(context.Background(), cfg.DatabaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("database: %w", err)
 	}
 
-	postgres := Database{
+	postgres := UserRepository{
 		qr: db.New(conn),
 	}
 
 	return &postgres, nil
 }
 
-func (d *Database) CreateUser(ctx context.Context, user oapi.UserCreate) (*oapi.User, error) {
+func (d *UserRepository) Create(ctx context.Context, user oapi.UserCreate) (*oapi.User, error) {
 	var params db.CreateUserParams
 
 	err := copier.Copy(&params, user)
@@ -52,7 +52,7 @@ func (d *Database) CreateUser(ctx context.Context, user oapi.UserCreate) (*oapi.
 	return &res, nil
 }
 
-func (d *Database) GetUser(ctx context.Context, id int64) (*oapi.User, error) {
+func (d *UserRepository) Get(ctx context.Context, id int64) (*oapi.User, error) {
 	row, err := d.qr.GetUser(ctx, int32(id))
 	if err != nil {
 		return nil, err
@@ -68,7 +68,7 @@ func (d *Database) GetUser(ctx context.Context, id int64) (*oapi.User, error) {
 	return &user, nil
 }
 
-func (d *Database) ListUsers(ctx context.Context) ([]oapi.User, error) {
+func (d *UserRepository) List(ctx context.Context) ([]oapi.User, error) {
 	rows, err := d.qr.ListUsers(ctx)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (d *Database) ListUsers(ctx context.Context) ([]oapi.User, error) {
 	return users, nil
 }
 
-func (d *Database) UpdateUser(ctx context.Context, id int64, update oapi.UserUpdate) (*oapi.User, error) {
+func (d *UserRepository) Update(ctx context.Context, id int64, update oapi.UserUpdate) (*oapi.User, error) {
 	var params db.UpdateUserParams
 
 	err := copier.Copy(&params, update)
@@ -114,14 +114,14 @@ func (d *Database) UpdateUser(ctx context.Context, id int64, update oapi.UserUpd
 	return &user, nil
 }
 
-func (d *Database) DeleteUser(ctx context.Context, id int64) error {
+func (d *UserRepository) Delete(ctx context.Context, id int64) error {
 	rowsAffected, err := d.qr.DeleteUser(ctx, int32(id))
 	if err != nil {
 		return err
 	}
 
 	if rowsAffected == 0 {
-		return ErrUserNotFound
+		return ErrRecordNotFound
 	}
 
 	return nil

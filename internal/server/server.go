@@ -5,25 +5,25 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/xurvan/go-oapi-sqlc-template/internal/database"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
+	"github.com/xurvan/go-oapi-sqlc-template/internal/repository"
 )
 
 type Server struct {
-	db *database.Database
+	repo *repository.UserRepository
 }
 
 // Ensure that Server implements the StrictServerInterface interface at compile time
 var _ oapi.StrictServerInterface = (*Server)(nil)
 
-func NewServer(db *database.Database) *Server {
+func NewServer(db *repository.UserRepository) *Server {
 	return &Server{
-		db: db,
+		repo: db,
 	}
 }
 
 func (s *Server) ListUsers(ctx context.Context, request oapi.ListUsersRequestObject) (oapi.ListUsersResponseObject, error) {
-	users, err := s.db.ListUsers(ctx)
+	users, err := s.repo.List(ctx)
 	if err != nil {
 		return oapi.ListUsers500JSONResponse{
 			ErrorJSONResponse: oapi.ErrorJSONResponse{
@@ -45,7 +45,7 @@ func (s *Server) CreateUser(ctx context.Context, request oapi.CreateUserRequestO
 		}, nil
 	}
 
-	user, err := s.db.CreateUser(ctx, *request.Body)
+	user, err := s.repo.Create(ctx, *request.Body)
 	if err != nil {
 		return oapi.CreateUser500JSONResponse{
 			ErrorJSONResponse: oapi.ErrorJSONResponse{
@@ -59,7 +59,7 @@ func (s *Server) CreateUser(ctx context.Context, request oapi.CreateUserRequestO
 }
 
 func (s *Server) GetUserById(ctx context.Context, request oapi.GetUserByIdRequestObject) (oapi.GetUserByIdResponseObject, error) {
-	user, err := s.db.GetUser(ctx, request.Id)
+	user, err := s.repo.Get(ctx, request.Id)
 	if err != nil {
 		return oapi.GetUserById404JSONResponse{
 			NotFoundJSONResponse: oapi.NotFoundJSONResponse{
@@ -82,7 +82,7 @@ func (s *Server) UpdateUser(ctx context.Context, request oapi.UpdateUserRequestO
 		}, nil
 	}
 
-	user, err := s.db.UpdateUser(ctx, request.Id, *request.Body)
+	user, err := s.repo.Update(ctx, request.Id, *request.Body)
 	if err != nil {
 		return oapi.UpdateUser500JSONResponse{
 			ErrorJSONResponse: oapi.ErrorJSONResponse{
@@ -96,9 +96,9 @@ func (s *Server) UpdateUser(ctx context.Context, request oapi.UpdateUserRequestO
 }
 
 func (s *Server) DeleteUser(ctx context.Context, request oapi.DeleteUserRequestObject) (oapi.DeleteUserResponseObject, error) {
-	err := s.db.DeleteUser(ctx, request.Id)
+	err := s.repo.Delete(ctx, request.Id)
 	if err != nil {
-		if errors.Is(err, database.ErrUserNotFound) {
+		if errors.Is(err, repository.ErrRecordNotFound) {
 			return oapi.DeleteUser404JSONResponse{
 				NotFoundJSONResponse: oapi.NotFoundJSONResponse{
 					Code:    http.StatusNotFound,

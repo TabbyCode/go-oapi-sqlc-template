@@ -10,20 +10,20 @@ import (
 	"time"
 
 	"github.com/xurvan/go-oapi-sqlc-template/internal/config"
-	"github.com/xurvan/go-oapi-sqlc-template/internal/database"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
+	"github.com/xurvan/go-oapi-sqlc-template/internal/repository"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/server"
 )
 
 func main() {
 	cfg := config.Load()
 
-	db, err := database.New(cfg)
+	repo, err := repository.NewUserRepository(cfg)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %s", err)
 	}
 
-	srv := server.NewServer(db)
+	srv := server.NewServer(repo)
 	strict := oapi.NewStrictHandler(srv, nil)
 	handler := oapi.HandlerWithOptions(
 		strict,
