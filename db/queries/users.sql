@@ -17,6 +17,9 @@ SELECT
     created_at,
     updated_at
 FROM users
+WHERE
+    (sqlc.narg('name')::text IS NULL OR name = sqlc.narg('name')::text)
+    AND (sqlc.narg('email')::text IS NULL OR email = sqlc.narg('email')::text)
 ORDER BY created_at
 LIMIT sqlc.arg('limit') OFFSET sqlc.arg('offset');
 

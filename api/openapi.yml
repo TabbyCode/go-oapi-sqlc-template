@@ -14,6 +14,18 @@ paths:
       tags:
         - users
       parameters:
+        - name: name
+          in: query
+          description: Filter users by name
+          required: false
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: Filter users by email
+          required: false
+          schema:
+            type: string
         - name: limit
           in: query
           description: Maximum number of users to return
