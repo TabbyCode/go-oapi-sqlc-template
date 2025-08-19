@@ -39,5 +39,4 @@ RETURNING *;
 -- name: DeleteUser :execrows
 DELETE
 FROM users
-WHERE id = sqlc.arg('id')
-RETURNING *;
+WHERE id = sqlc.arg('id');
