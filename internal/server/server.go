@@ -13,7 +13,7 @@ type Server struct {
 	repo *repository.UserRepository
 }
 
-// Ensure that Server implements the StrictServerInterface interface at compile time
+// Ensure that Server implements the StrictServerInterface interface at compile time.
 var _ oapi.StrictServerInterface = (*Server)(nil)
 
 func NewServer(db *repository.UserRepository) *Server {
@@ -22,7 +22,10 @@ func NewServer(db *repository.UserRepository) *Server {
 	}
 }
 
-func (s *Server) ListUsers(ctx context.Context, request oapi.ListUsersRequestObject) (oapi.ListUsersResponseObject, error) {
+func (s *Server) ListUsers(
+	ctx context.Context,
+	request oapi.ListUsersRequestObject,
+) (oapi.ListUsersResponseObject, error) {
 	users, err := s.repo.List(ctx, request.Params)
 	if err != nil {
 		return oapi.ListUsers500JSONResponse{
@@ -32,10 +35,14 @@ func (s *Server) ListUsers(ctx context.Context, request oapi.ListUsersRequestObj
 			},
 		}, nil
 	}
+
 	return oapi.ListUsers200JSONResponse(users), nil
 }
 
-func (s *Server) CreateUser(ctx context.Context, request oapi.CreateUserRequestObject) (oapi.CreateUserResponseObject, error) {
+func (s *Server) CreateUser(
+	ctx context.Context,
+	request oapi.CreateUserRequestObject,
+) (oapi.CreateUserResponseObject, error) {
 	if request.Body == nil {
 		return oapi.CreateUser400JSONResponse{
 			BadRequestJSONResponse: oapi.BadRequestJSONResponse{
@@ -58,7 +65,10 @@ func (s *Server) CreateUser(ctx context.Context, request oapi.CreateUserRequestO
 	return oapi.CreateUser201JSONResponse(*user), nil
 }
 
-func (s *Server) GetUserById(ctx context.Context, request oapi.GetUserByIdRequestObject) (oapi.GetUserByIdResponseObject, error) {
+func (s *Server) GetUserById(
+	ctx context.Context,
+	request oapi.GetUserByIdRequestObject,
+) (oapi.GetUserByIdResponseObject, error) {
 	user, err := s.repo.Get(ctx, request.Id)
 	if err != nil {
 		return oapi.GetUserById404JSONResponse{
@@ -72,7 +82,10 @@ func (s *Server) GetUserById(ctx context.Context, request oapi.GetUserByIdReques
 	return oapi.GetUserById200JSONResponse(*user), nil
 }
 
-func (s *Server) UpdateUser(ctx context.Context, request oapi.UpdateUserRequestObject) (oapi.UpdateUserResponseObject, error) {
+func (s *Server) UpdateUser(
+	ctx context.Context,
+	request oapi.UpdateUserRequestObject,
+) (oapi.UpdateUserResponseObject, error) {
 	if request.Body == nil {
 		return oapi.UpdateUser400JSONResponse{
 			BadRequestJSONResponse: oapi.BadRequestJSONResponse{
@@ -95,7 +108,10 @@ func (s *Server) UpdateUser(ctx context.Context, request oapi.UpdateUserRequestO
 	return oapi.UpdateUser200JSONResponse(*user), nil
 }
 
-func (s *Server) DeleteUser(ctx context.Context, request oapi.DeleteUserRequestObject) (oapi.DeleteUserResponseObject, error) {
+func (s *Server) DeleteUser(
+	ctx context.Context,
+	request oapi.DeleteUserRequestObject,
+) (oapi.DeleteUserResponseObject, error) {
 	err := s.repo.Delete(ctx, request.Id)
 	if err != nil {
 		if errors.Is(err, repository.ErrRecordNotFound) {
