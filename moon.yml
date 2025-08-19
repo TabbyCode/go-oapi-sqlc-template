@@ -37,6 +37,7 @@ tasks:
     script: 'bash scripts/format.sh'
     inputs:
       - '@group(sources)'
+      - 'db'
   lint:
     script: 'bash scripts/lint.sh'
     inputs:
