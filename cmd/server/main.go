@@ -24,8 +24,9 @@ func main() {
 	}
 
 	srv := server.NewServer(db)
+	strict := oapi.NewStrictHandler(srv, nil)
 	handler := oapi.HandlerWithOptions(
-		srv,
+		strict,
 		oapi.GorillaServerOptions{},
 	)
 
