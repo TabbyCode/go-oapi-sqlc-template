@@ -68,8 +68,19 @@ func (d *UserRepository) Get(ctx context.Context, id int64) (*oapi.User, error) 
 	return &user, nil
 }
 
-func (d *UserRepository) List(ctx context.Context) ([]oapi.User, error) {
-	rows, err := d.qr.ListUsers(ctx)
+func (d *UserRepository) List(ctx context.Context, user oapi.ListUsersParams) ([]oapi.User, error) {
+	var params db.ListUsersParams
+
+	err := copier.Copy(&params, user)
+	if err != nil {
+		return nil, err
+	}
+
+	if user.Limit == nil {
+		params.Limit = 10
+	}
+
+	rows, err := d.qr.ListUsers(ctx, params)
 	if err != nil {
 		return nil, err
 	}

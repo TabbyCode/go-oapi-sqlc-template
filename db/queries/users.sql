@@ -17,7 +17,8 @@ SELECT
     created_at,
     updated_at
 FROM users
-ORDER BY id;
+ORDER BY created_at
+LIMIT sqlc.arg('limit') OFFSET sqlc.arg('offset');
 
 -- name: CreateUser :one
 INSERT INTO users (

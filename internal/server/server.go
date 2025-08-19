@@ -23,7 +23,7 @@ func NewServer(db *repository.UserRepository) *Server {
 }
 
 func (s *Server) ListUsers(ctx context.Context, request oapi.ListUsersRequestObject) (oapi.ListUsersResponseObject, error) {
-	users, err := s.repo.List(ctx)
+	users, err := s.repo.List(ctx, request.Params)
 	if err != nil {
 		return oapi.ListUsers500JSONResponse{
 			ErrorJSONResponse: oapi.ErrorJSONResponse{
