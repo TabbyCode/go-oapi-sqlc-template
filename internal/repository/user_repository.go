@@ -38,19 +38,19 @@ func (d *UserRepository) Create(ctx context.Context, user oapi.UserCreate) (*oap
 
 	err := copier.Copy(&params, user)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database: %w", err)
 	}
 
 	row, err := d.qr.CreateUser(ctx, params)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database: %w", err)
 	}
 
 	var res oapi.User
 
 	err = copier.Copy(&res, row)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database: %w", err)
 	}
 
 	return &res, nil
@@ -60,14 +60,14 @@ func (d *UserRepository) Create(ctx context.Context, user oapi.UserCreate) (*oap
 func (d *UserRepository) Get(ctx context.Context, id int32) (*oapi.User, error) {
 	row, err := d.qr.GetUser(ctx, id)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database: %w", err)
 	}
 
 	var user oapi.User
 
 	err = copier.Copy(&user, row)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database: %w", err)
 	}
 
 	return &user, nil
@@ -79,7 +79,7 @@ func (d *UserRepository) List(ctx context.Context, user oapi.ListUsersParams) ([
 
 	err := copier.Copy(&params, user)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database: %w", err)
 	}
 
 	if user.Limit == nil {
@@ -88,7 +88,7 @@ func (d *UserRepository) List(ctx context.Context, user oapi.ListUsersParams) ([
 
 	rows, err := d.qr.ListUsers(ctx, params)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database: %w", err)
 	}
 
 	var users []oapi.User
@@ -97,7 +97,7 @@ func (d *UserRepository) List(ctx context.Context, user oapi.ListUsersParams) ([
 
 		err = copier.Copy(&user, row)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("database: %w", err)
 		}
 
 		users = append(users, user)
@@ -112,21 +112,21 @@ func (d *UserRepository) Update(ctx context.Context, userID int32, update oapi.U
 
 	err := copier.Copy(&params, update)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database: %w", err)
 	}
 
 	params.ID = userID
 
 	row, err := d.qr.UpdateUser(ctx, params)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database: %w", err)
 	}
 
 	var user oapi.User
 
 	err = copier.Copy(&user, row)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database: %w", err)
 	}
 
 	return &user, nil
@@ -136,11 +136,11 @@ func (d *UserRepository) Update(ctx context.Context, userID int32, update oapi.U
 func (d *UserRepository) Delete(ctx context.Context, id int32) error {
 	rowsAffected, err := d.qr.DeleteUser(ctx, id)
 	if err != nil {
-		return err
+		return fmt.Errorf("database: %w", err)
 	}
 
 	if rowsAffected == 0 {
-		return ErrRecordNotFound
+		return fmt.Errorf("database: %w", ErrRecordNotFound)
 	}
 
 	return nil
