@@ -1,3 +1,4 @@
+//nolint:nilerr // When we use strict server we have to return nil error
 package server
 
 import (
