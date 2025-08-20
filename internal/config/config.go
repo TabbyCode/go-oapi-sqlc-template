@@ -22,14 +22,11 @@ type Config struct {
 
 // Load reads configuration from environment variables and returns a Config instance.
 func Load() *Config {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Failed to load environment variables: %s", err)
-	}
+	_ = godotenv.Load()
 
 	var cfg Config
 
-	err = envconfig.Process("", &cfg)
+	err := envconfig.Process("", &cfg)
 	if err != nil {
 		log.Fatalf("Failed to load server config: %s", err)
 	}
