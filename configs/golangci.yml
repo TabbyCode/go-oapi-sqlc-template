@@ -35,6 +35,7 @@ linters:
     - lll # golines is better
     - nlreturn # wsl_v5 is better
     - wsl # wsl_v5 is better
+    - prealloc # we do not mind performance this much
 
   settings:
     govet:
@@ -60,3 +61,6 @@ linters:
     wsl_v5:
       allow-whole-block: true
       default: all
+    exhaustruct:
+      include:
+        - 'github.com/xurvan/go-oapi-sqlc-template'
