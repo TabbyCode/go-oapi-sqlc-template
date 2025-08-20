@@ -85,7 +85,7 @@ paths:
         required: true
         schema:
           type: integer
-          format: int64
+          format: int32
     get:
       summary: Get a user by ID
       operationId: getUserById
@@ -150,7 +150,7 @@ components:
       properties:
         id:
           type: integer
-          format: int64
+          format: int32
         name:
           type: string
         email:

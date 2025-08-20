@@ -52,8 +52,8 @@ func (d *UserRepository) Create(ctx context.Context, user oapi.UserCreate) (*oap
 	return &res, nil
 }
 
-func (d *UserRepository) Get(ctx context.Context, id int64) (*oapi.User, error) {
-	row, err := d.qr.GetUser(ctx, int32(id))
+func (d *UserRepository) Get(ctx context.Context, id int32) (*oapi.User, error) {
+	row, err := d.qr.GetUser(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func (d *UserRepository) List(ctx context.Context, user oapi.ListUsersParams) ([
 	return users, nil
 }
 
-func (d *UserRepository) Update(ctx context.Context, id int64, update oapi.UserUpdate) (*oapi.User, error) {
+func (d *UserRepository) Update(ctx context.Context, id int32, update oapi.UserUpdate) (*oapi.User, error) {
 	var params db.UpdateUserParams
 
 	err := copier.Copy(&params, update)
@@ -108,7 +108,7 @@ func (d *UserRepository) Update(ctx context.Context, id int64, update oapi.UserU
 		return nil, err
 	}
 
-	params.ID = int32(id)
+	params.ID = id
 
 	row, err := d.qr.UpdateUser(ctx, params)
 	if err != nil {
@@ -125,8 +125,8 @@ func (d *UserRepository) Update(ctx context.Context, id int64, update oapi.UserU
 	return &user, nil
 }
 
-func (d *UserRepository) Delete(ctx context.Context, id int64) error {
-	rowsAffected, err := d.qr.DeleteUser(ctx, int32(id))
+func (d *UserRepository) Delete(ctx context.Context, id int32) error {
+	rowsAffected, err := d.qr.DeleteUser(ctx, id)
 	if err != nil {
 		return err
 	}
