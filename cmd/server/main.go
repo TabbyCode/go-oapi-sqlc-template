@@ -1,3 +1,4 @@
+// Package main provides the HTTP server entry point.
 package main
 
 import (

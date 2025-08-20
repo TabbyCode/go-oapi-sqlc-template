@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/handlers"
 )
 
+// SetupMiddlewares configures logging and recovery middlewares for the given handler.
 func SetupMiddlewares(handler http.Handler) http.Handler {
 	h := handlers.LoggingHandler(os.Stdout, handler)
 

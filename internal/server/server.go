@@ -1,4 +1,6 @@
-//nolint:nilerr // When we use strict server we have to return nil error
+// Package server implements HTTP handlers for the user API.
+//
+//nolint:nilerr // When we use a strict server, we have to return nil error
 package server
 
 import (
@@ -10,6 +12,7 @@ import (
 	"github.com/xurvan/go-oapi-sqlc-template/internal/repository"
 )
 
+// Server handles HTTP requests for user operations.
 type Server struct {
 	repo *repository.UserRepository
 }
@@ -17,12 +20,14 @@ type Server struct {
 // Ensure that Server implements the StrictServerInterface interface at compile time.
 var _ oapi.StrictServerInterface = (*Server)(nil)
 
+// NewServer creates a new Server instance with the given repository.
 func NewServer(db *repository.UserRepository) *Server {
 	return &Server{
 		repo: db,
 	}
 }
 
+// ListUsers handles GET /users requests to retrieve a list of users.
 func (s *Server) ListUsers(
 	ctx context.Context,
 	request oapi.ListUsersRequestObject,
@@ -40,6 +45,7 @@ func (s *Server) ListUsers(
 	return oapi.ListUsers200JSONResponse(users), nil
 }
 
+// CreateUser handles POST /users requests to create a new user.
 func (s *Server) CreateUser(
 	ctx context.Context,
 	request oapi.CreateUserRequestObject,
@@ -66,6 +72,7 @@ func (s *Server) CreateUser(
 	return oapi.CreateUser201JSONResponse(*user), nil
 }
 
+// GetUserById handles GET /users/{id} requests to retrieve a specific user.
 func (s *Server) GetUserById(
 	ctx context.Context,
 	request oapi.GetUserByIdRequestObject,
@@ -83,6 +90,7 @@ func (s *Server) GetUserById(
 	return oapi.GetUserById200JSONResponse(*user), nil
 }
 
+// UpdateUser handles PUT /users/{id} requests to update a specific user.
 func (s *Server) UpdateUser(
 	ctx context.Context,
 	request oapi.UpdateUserRequestObject,
@@ -109,6 +117,7 @@ func (s *Server) UpdateUser(
 	return oapi.UpdateUser200JSONResponse(*user), nil
 }
 
+// DeleteUser handles DELETE /users/{id} requests to delete a specific user.
 func (s *Server) DeleteUser(
 	ctx context.Context,
 	request oapi.DeleteUserRequestObject,

@@ -1,3 +1,4 @@
+// Package repository provides a data access layer for user operations.
 package repository
 
 import (
@@ -12,10 +13,12 @@ import (
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
 )
 
+// UserRepository handles database operations for user entities.
 type UserRepository struct {
 	qr *db.Queries
 }
 
+// NewUserRepository creates a new UserRepository instance with a database connection.
 func NewUserRepository(cfg *config.Config) (*UserRepository, error) {
 	conn, err := pgx.Connect(context.Background(), cfg.DatabaseURL)
 	if err != nil {
@@ -29,6 +32,7 @@ func NewUserRepository(cfg *config.Config) (*UserRepository, error) {
 	return &postgres, nil
 }
 
+// Create inserts a new user into the database and returns the created user.
 func (d *UserRepository) Create(ctx context.Context, user oapi.UserCreate) (*oapi.User, error) {
 	var params db.CreateUserParams
 
@@ -52,6 +56,7 @@ func (d *UserRepository) Create(ctx context.Context, user oapi.UserCreate) (*oap
 	return &res, nil
 }
 
+// Get retrieves a user by ID from the database.
 func (d *UserRepository) Get(ctx context.Context, id int32) (*oapi.User, error) {
 	row, err := d.qr.GetUser(ctx, id)
 	if err != nil {
@@ -68,6 +73,7 @@ func (d *UserRepository) Get(ctx context.Context, id int32) (*oapi.User, error) 
 	return &user, nil
 }
 
+// List retrieves a paginated list of users from the database.
 func (d *UserRepository) List(ctx context.Context, user oapi.ListUsersParams) ([]oapi.User, error) {
 	var params db.ListUsersParams
 
@@ -100,6 +106,7 @@ func (d *UserRepository) List(ctx context.Context, user oapi.ListUsersParams) ([
 	return users, nil
 }
 
+// Update modifies an existing user in the database and returns the updated user.
 func (d *UserRepository) Update(ctx context.Context, id int32, update oapi.UserUpdate) (*oapi.User, error) {
 	var params db.UpdateUserParams
 
@@ -125,6 +132,7 @@ func (d *UserRepository) Update(ctx context.Context, id int32, update oapi.UserU
 	return &user, nil
 }
 
+// Delete removes a user from the database by ID.
 func (d *UserRepository) Delete(ctx context.Context, id int32) error {
 	rowsAffected, err := d.qr.DeleteUser(ctx, id)
 	if err != nil {

@@ -1,3 +1,4 @@
+// Package config handles application configuration loading.
 package config
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
+// Config holds all application configuration values.
 type Config struct {
 	ListenAddress     string        `default:"localhost:8080" envconfig:"LISTEN_ADDRESS"`
 	DatabaseURL       string        `                         envconfig:"DATABASE_URL"        required:"true"`
@@ -18,6 +20,7 @@ type Config struct {
 	ShutdownTimeout   time.Duration `default:"5s"             envconfig:"SHUTDOWN_TIMEOUT"`
 }
 
+// Load reads configuration from environment variables and returns a Config instance.
 func Load() *Config {
 	err := godotenv.Load()
 	if err != nil {
