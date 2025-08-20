@@ -1,6 +1,6 @@
 // Package server implements HTTP handlers for the user API.
 //
-//nolint:nilerr // When we use a strict server, we have to return nil error
+//nolint:nilerr,ireturn // The generated code forces us to return interface and nil errors
 package server
 
 import (
