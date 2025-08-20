@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/xurvan/go-oapi-sqlc-template/internal/config"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
@@ -35,10 +34,10 @@ func main() {
 	httpServer := &http.Server{
 		Addr:              cfg.ListenAddress,
 		Handler:           handler,
-		ReadTimeout:       15 * time.Second,
-		ReadHeaderTimeout: 5 * time.Second,
-		WriteTimeout:      15 * time.Second,
-		IdleTimeout:       60 * time.Second,
+		ReadTimeout:       cfg.ReadTimeout,
+		ReadHeaderTimeout: cfg.ReadHeaderTimeout,
+		WriteTimeout:      cfg.WriteTimeout,
+		IdleTimeout:       cfg.IdleTimeout,
 	}
 
 	// Channel to listen for errors coming from the listener
@@ -57,22 +56,22 @@ func main() {
 
 	// Blocking main and waiting for shutdown or server errors
 	select {
-	case err := <-serverErrors:
+	case err = <-serverErrors:
 		log.Fatalf("Error starting server: %v", err)
 
 	case <-shutdown:
 		log.Println("Shutting down server...")
 
 		// Create a deadline for the shutdown
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), cfg.ShutdownTimeout)
 		defer cancel()
 
 		// Gracefully shutdown the server
-		err := httpServer.Shutdown(ctx)
+		err = httpServer.Shutdown(ctx)
 		if err != nil {
 			log.Printf("Error during server shutdown: %v", err)
 
-			err := httpServer.Close()
+			err = httpServer.Close()
 			if err != nil {
 				log.Printf("Error during server shutdown: %v", err)
 			}
