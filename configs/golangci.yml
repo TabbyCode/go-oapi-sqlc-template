@@ -64,3 +64,5 @@ linters:
     exhaustruct:
       include:
         - 'github.com/xurvan/go-oapi-sqlc-template'
+    tagalign:
+      strict: true
