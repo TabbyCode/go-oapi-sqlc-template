@@ -8,6 +8,8 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jinzhu/copier"
 
+	oapitypes "github.com/oapi-codegen/runtime/types"
+
 	"github.com/xurvan/go-oapi-sqlc-template/internal/config"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/db"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
@@ -57,7 +59,7 @@ func (d *UserRepository) Create(ctx context.Context, user oapi.UserCreate) (*oap
 }
 
 // Get retrieves a user by ID from the database.
-func (d *UserRepository) Get(ctx context.Context, id int32) (*oapi.User, error) {
+func (d *UserRepository) Get(ctx context.Context, id oapitypes.UUID) (*oapi.User, error) {
 	row, err := d.qr.GetUser(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("database: %w", err)
@@ -107,7 +109,11 @@ func (d *UserRepository) List(ctx context.Context, user oapi.ListUsersParams) ([
 }
 
 // Update modifies an existing user in the database and returns the updated user.
-func (d *UserRepository) Update(ctx context.Context, userID int32, update oapi.UserUpdate) (*oapi.User, error) {
+func (d *UserRepository) Update(
+	ctx context.Context,
+	userID oapitypes.UUID,
+	update oapi.UserUpdate,
+) (*oapi.User, error) {
 	var params db.UpdateUserParams
 
 	err := copier.Copy(&params, update)
@@ -133,7 +139,7 @@ func (d *UserRepository) Update(ctx context.Context, userID int32, update oapi.U
 }
 
 // Delete removes a user from the database by ID.
-func (d *UserRepository) Delete(ctx context.Context, id int32) error {
+func (d *UserRepository) Delete(ctx context.Context, id oapitypes.UUID) error {
 	rowsAffected, err := d.qr.DeleteUser(ctx, id)
 	if err != nil {
 		return fmt.Errorf("database: %w", err)

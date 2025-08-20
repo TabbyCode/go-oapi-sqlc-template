@@ -84,8 +84,8 @@ paths:
         in: path
         required: true
         schema:
-          type: integer
-          format: int32
+          type: string
+          format: uuid
     get:
       summary: Get a user by ID
       operationId: getUserByID
@@ -149,8 +149,8 @@ components:
         - created_at
       properties:
         id:
-          type: integer
-          format: int32
+          type: string
+          format: uuid
         name:
           type: string
         email:
