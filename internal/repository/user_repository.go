@@ -107,7 +107,7 @@ func (d *UserRepository) List(ctx context.Context, user oapi.ListUsersParams) ([
 }
 
 // Update modifies an existing user in the database and returns the updated user.
-func (d *UserRepository) Update(ctx context.Context, id int32, update oapi.UserUpdate) (*oapi.User, error) {
+func (d *UserRepository) Update(ctx context.Context, userID int32, update oapi.UserUpdate) (*oapi.User, error) {
 	var params db.UpdateUserParams
 
 	err := copier.Copy(&params, update)
@@ -115,7 +115,7 @@ func (d *UserRepository) Update(ctx context.Context, id int32, update oapi.UserU
 		return nil, err
 	}
 
-	params.ID = id
+	params.ID = userID
 
 	row, err := d.qr.UpdateUser(ctx, params)
 	if err != nil {
