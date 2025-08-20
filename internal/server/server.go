@@ -72,14 +72,14 @@ func (s *Server) CreateUser(
 	return oapi.CreateUser201JSONResponse(*user), nil
 }
 
-// GetUserById handles GET /users/{id} requests to retrieve a specific user.
-func (s *Server) GetUserById(
+// GetUserByID handles GET /users/{id} requests to retrieve a specific user.
+func (s *Server) GetUserByID(
 	ctx context.Context,
-	request oapi.GetUserByIdRequestObject,
-) (oapi.GetUserByIdResponseObject, error) {
+	request oapi.GetUserByIDRequestObject,
+) (oapi.GetUserByIDResponseObject, error) {
 	user, err := s.repo.Get(ctx, request.Id)
 	if err != nil {
-		return oapi.GetUserById404JSONResponse{
+		return oapi.GetUserByID404JSONResponse{
 			NotFoundJSONResponse: oapi.NotFoundJSONResponse{
 				Code:    http.StatusNotFound,
 				Message: err.Error(),
@@ -87,7 +87,7 @@ func (s *Server) GetUserById(
 		}, nil
 	}
 
-	return oapi.GetUserById200JSONResponse(*user), nil
+	return oapi.GetUserByID200JSONResponse(*user), nil
 }
 
 // UpdateUser handles PUT /users/{id} requests to update a specific user.
