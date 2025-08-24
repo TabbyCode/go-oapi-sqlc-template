@@ -5,8 +5,7 @@ output: internal/gen/oapi/users.go
 generate:
   models: true
   strict-server: true
-  gorilla-server: true
-  embedded-spec: true
+  fiber-server: true
 output-options:
   include-tags:
     - users

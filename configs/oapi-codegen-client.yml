@@ -5,7 +5,6 @@ output: pkg/gen/client.go
 generate:
   models: true
   client: true
-  embedded-spec: true
 output-options:
   include-tags:
     - users

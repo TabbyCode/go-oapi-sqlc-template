@@ -2,12 +2,14 @@
 package main
 
 import (
-	"context"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 
 	"github.com/xurvan/go-oapi-sqlc-template/internal/config"
 	"github.com/xurvan/go-oapi-sqlc-template/internal/gen/oapi"
@@ -25,21 +27,16 @@ func main() {
 
 	srv := server.NewServer(repo)
 	strict := oapi.NewStrictHandler(srv, nil)
-	handler := oapi.HandlerWithOptions(
-		strict,
-		oapi.GorillaServerOptions{},
-	)
+	app := fiber.New(fiber.Config{
+		ReadTimeout:  cfg.ReadTimeout,
+		WriteTimeout: cfg.WriteTimeout,
+		IdleTimeout:  cfg.IdleTimeout,
+	})
 
-	handler = server.SetupMiddlewares(handler)
+	app.Use(logger.New())
+	app.Use(recover.New())
 
-	httpServer := &http.Server{
-		Addr:              cfg.ListenAddress,
-		Handler:           handler,
-		ReadTimeout:       cfg.ReadTimeout,
-		ReadHeaderTimeout: cfg.ReadHeaderTimeout,
-		WriteTimeout:      cfg.WriteTimeout,
-		IdleTimeout:       cfg.IdleTimeout,
-	}
+	oapi.RegisterHandlers(app, strict)
 
 	// Channel to listen for errors coming from the listener
 	serverErrors := make(chan error, 1)
@@ -48,7 +45,7 @@ func main() {
 	go func() {
 		log.Printf("Starting server on %s", cfg.ListenAddress)
 
-		serverErrors <- httpServer.ListenAndServe()
+		serverErrors <- app.Listen(cfg.ListenAddress)
 	}()
 
 	// Channel to listen for an interrupt or terminate signal from the OS
@@ -61,21 +58,9 @@ func main() {
 		log.Fatalf("Error starting server: %v", err)
 
 	case <-shutdown:
-		log.Println("Shutting down server...")
-
-		// Create a deadline for the shutdown
-		ctx, cancel := context.WithTimeout(context.Background(), cfg.ShutdownTimeout)
-		defer cancel()
-
-		// Gracefully shutdown the server
-		err = httpServer.Shutdown(ctx)
+		err = app.ShutdownWithTimeout(cfg.ShutdownTimeout)
 		if err != nil {
 			log.Printf("Error during server shutdown: %v", err)
-
-			err = httpServer.Close()
-			if err != nil {
-				log.Printf("Error during server shutdown: %v", err)
-			}
 		}
 
 		log.Println("Server gracefully stopped")
