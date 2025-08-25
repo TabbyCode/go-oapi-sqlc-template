@@ -142,7 +142,7 @@ moon :serve
 make serve
 
 # Direct Go command
-go run cmd/server/main.go
+go run cmd/api/main.go
 ```
 
 ### Production Build
@@ -150,7 +150,7 @@ go run cmd/server/main.go
 # Build for production
 moon :build
 
-# The binary will be available at: bin/server
+# The binary will be available at: bin/api
 ```
 
 ### Database Setup

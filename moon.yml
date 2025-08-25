@@ -51,13 +51,13 @@ tasks:
       CGO_ENABLED: '0'
       GOOS: 'linux'
       GOARCH: 'amd64'
-    script: 'go build -ldflags="-s -w" -trimpath -o bin/server cmd/server/main.go'
+    script: 'go build -ldflags="-s -w" -trimpath -o bin/api cmd/api/main.go'
     inputs:
       - '@group(sources)'
     outputs:
-      - 'bin/server'
+      - 'bin/api'
   serve:
-    script: 'go run ./cmd/server'
+    script: 'go run ./cmd/api'
     inputs:
       - '@group(sources)'
   migrate:
